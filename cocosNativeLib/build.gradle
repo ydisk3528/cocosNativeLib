@@ -1,144 +1,154 @@
-
+// ✅ 关键点1：插件
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+apply plugin: 'stringfog'
+
+//// ✅ 关键点2：为 JitPack/CI 提供插件与仓库（stringfog 插件需要）
+//buildscript {
+//    repositories {
+//        google()
+//        mavenCentral()
+//        maven { url 'https://jitpack.io' }
+//    }
+//    dependencies {
+//        // 如你本地已有，可与根 build.gradle 合并；JitPack 上必须能解析到
+//        classpath 'com.github.megatronking:stringfog-gradle-plugin:5.2.1'
+//    }
+//}
+//
+//// ✅ 关键点3：依赖仓库（保证 CI 可解析所有依赖）
+//repositories {
+//    google()
+//    mavenCentral()
+//    maven { url 'https://jitpack.io' }
+//}
 
 android {
     namespace 'com.ytrogame.common'
-    compileSdk 36
+    compileSdk 35
 
     defaultConfig {
+        resValue "string", "ads_appid", "23bcbf35d"
+        // 添加构建前生成资源任务
+        resValue "string", "ads_native", "4x4276likjlvmwvo"
+        // 添加构建前生成资源任务
+        resValue "string", "ads_insertid", "iyibp75b1kbwmen5"
+        // 添加构建前生成资源任务
+        resValue "string", "ads_bannerid", "t05gq7r1kysakysw"
         minSdk 28
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
-    signingConfigs {
-        release {
-            storeFile file('E:\\wg\\cocos\\8game\\Puzzle Line Fight\\com.winhtur355jj.khfd995jf.jks')
-            storePassword 'com.winhtur355jj.khfd995jf'
-            keyAlias 'com.winhtur355jj.khfd995jf'
-            keyPassword 'com.winhtur355jj.khfd995jf'
+
+    // ⚠️ JitPack 构建机器拿不到你本地 keystore；用“存在才配置”的方式避免失败
+    def keystorePath = 'E:\\wg\\cocos\\8game\\Puzzle Line Fight\\com.winhtur355jj.khfd995jf.jks'
+    def hasKeystore = file(keystorePath).exists()
+    publishing {
+        // 告诉 AGP：我要发布 release 变体（这样才会有 components.release）
+        singleVariant("release") {
+            // 可选：把源码一起打进 sourcesJar，JitPack 会一起产出
+            withSourcesJar()
         }
     }
+    signingConfigs {
+        if (hasKeystore) {
+            release {
+                storeFile file(keystorePath)
+                storePassword 'com.winhtur355jj.khfd995jf'
+                keyAlias 'com.winhtur355jj.khfd995jf'
+                keyPassword 'com.winhtur355jj.khfd995jf'
+            }
+        }
+    }
+
     buildTypes {
         debug {
             minifyEnabled true
-
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            if (hasKeystore) signingConfig signingConfigs.release
         }
         release {
             minifyEnabled true
-
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            if (hasKeystore) signingConfig signingConfigs.release
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-apply plugin: 'stringfog'
 
-// 导入RandomKeyGenerator类，如果使用HardCodeKeyGenerator，更换下类名
+// ===== stringfog 配置（保持你的原样）=====
 import com.github.megatronking.stringfog.plugin.kg.RandomKeyGenerator
 import com.github.megatronking.stringfog.plugin.StringFogMode
 
 stringfog {
-    // 必要：加解密库的实现类路径，需和上面配置的加解密算法库一致。
     implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
-    // 可选：StringFog会自动尝试获取packageName，如果遇到获取失败的情况，可以显式地指定。
     packageName 'com.ytrogame.common'
-    // 可选：加密开关，默认开启。
     enable true
-    // 可选：指定需加密的代码包路径，可配置多个，未指定将默认全部加密。
-    // 可选（3.0版本新增）：指定密钥生成器，默认使用长度8的随机密钥（每个字符串均有不同随机密钥）,
-    // 也可以指定一个固定的密钥：HardCodeKeyGenerator("This is a key")
     kg new RandomKeyGenerator()
-    // 可选（4.0版本新增）：用于控制字符串加密后在字节码中的存在形式, 默认为base64，
-    // 也可以使用text或者bytes
     mode StringFogMode.base64
 }
+
 dependencies {
-
-
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "androidx.browser:browser:1.4.0"
 
-
     implementation 'net.lingala.zip4j:zip4j:2.11.5'
     implementation "androidx.games:games-frame-pacing:2.1.3"
-    // To use the Games Activity library
     implementation "androidx.games:games-activity:4.0.0"
-    // To use the Games Controller Library
     implementation "androidx.games:games-controller:2.0.2"
+
     implementation 'top.canyie.pine:core:0.3.0'
     implementation 'com.github.megatronking.stringfog:xor:5.0.0'
     implementation 'androidx.core:core:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-//
-//
-//    // Add UnityAds Network
+
+    // Unity Ads
     implementation 'com.unity3d.ads-mediation:mediation-sdk:8.10.0'
     implementation 'com.unity3d.ads-mediation:adquality-sdk:7.26.0'
-
-    implementation 'com.google.android.gms:play-services-appset:16.0.0'
-    implementation 'com.google.android.gms:play-services-ads-identifier:18.1.0'
-    implementation 'com.google.android.gms:play-services-basement:18.1.0'
-
     implementation 'com.unity3d.ads-mediation:unityads-adapter:4.3.57'
     implementation 'com.unity3d.ads:unity-ads:4.15.1'
 
-
-
-
-    // Add UnityAds Network  end
+    implementation 'com.google.android.gms:play-services-appset:16.0.0'
+    // ⚠️ 只保留一个 ads-identifier（避免版本冲突）
+    implementation 'com.google.android.gms:play-services-ads-identifier:18.1.0'
+    implementation 'com.google.android.gms:play-services-basement:18.1.0'
 
     implementation 'com.android.installreferrer:installreferrer:2.2'
-    implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
 
-    implementation "androidx.work:work-runtime:2.7.1" // 举例
+    implementation "androidx.work:work-runtime:2.7.1"
     implementation 'com.alibaba:fastjson:2.0.28'
     implementation 'com.appsflyer:af-android-sdk:6.12.5'
     implementation 'com.adjust.sdk:adjust-android:5.1.0'
-    // Add the following if you're using the Adjust SDK inside web views on your app
     implementation 'com.adjust.sdk:adjust-android-webbridge:5.1.0'
 
-    implementation("org.nanohttpd:nanohttpd:2.3.1")
-
-
-
-
+    implementation "org.nanohttpd:nanohttpd:2.3.1"
 
     implementation "com.google.android.libraries.identity.googleid:googleid:1.1.1"
-//    implementation("com.google.firebase:firebase-analytics")
     implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
     implementation("com.google.android.gms:play-services-base:18.5.0")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.alibaba.fastjson2:fastjson2:2.0.56")
-    // TODO: Add the dependencies for any other Firebase products you want to use
-    // See https://firebase.google.com/docs/android/setup#available-libraries
-    // For example, add the dependencies for Firebase Authentication and Cloud Firestore
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-messaging")
-    implementation("com.google.android.gms:play-services-base:18.5.0")
     implementation("com.google.firebase:firebase-inappmessaging-display")
     implementation 'com.google.firebase:firebase-messaging-directboot'
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
 }
 
-// 在构建前生成 randommap.txt
+// ===== 构建前生成 randommaplib.txt（保持你的原样）=====
 task generateRandomDictionary {
     def dictFile = file("$projectDir/randommaplib.txt")
     outputs.file dictFile
-
     doLast {
         dictFile.parentFile.mkdirs()
         dictFile.withWriter("UTF-8") { writer ->
             def random = new Random()
             (1..100).each { idx ->
-                // 随机字符串 a-z 生成
                 def name = (5..(10 + random.nextInt(15))).collect {
                     (('a'..'z') + ('A'..'Z'))[random.nextInt(52)]
                 }.join("")
@@ -148,5 +158,25 @@ task generateRandomDictionary {
         println "✅ randommaplib.txt 已生成: ${dictFile}"
     }
 }
-// 让构建前自动执行
 preBuild.dependsOn(generateRandomDictionary)
+
+// ✅ 关键点4：maven-publish —— 让 JitPack 产出 pom/aar
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                // JitPack 规则：groupId 一定是 com.github.<GitHub用户名>
+                groupId = "com.github.ydisk3528"
+                artifactId = "cocosNativeLib"   // 产物名
+                version = "1.0.0"               // 仅供插件使用；真正下载用 Tag
+
+                pom {
+                    name = "cocosNativeLib"
+                    description = "cocos native android library"
+                }
+            }
+        }
+    }
+}

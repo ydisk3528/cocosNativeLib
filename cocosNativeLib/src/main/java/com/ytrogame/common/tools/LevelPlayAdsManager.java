@@ -35,7 +35,7 @@ import com.unity3d.mediation.banner.LevelPlayBannerAdView;
 import com.unity3d.mediation.banner.LevelPlayBannerAdViewListener;
 import com.unity3d.mediation.interstitial.LevelPlayInterstitialAd;
 import com.unity3d.mediation.interstitial.LevelPlayInterstitialAdListener;
-import com.winhtur355jj.khfd995jf.R;
+import com.ytrogame.common.R;
 import com.ytrogame.common.main.Jump503MainActivity;
 
 import java.util.Arrays;

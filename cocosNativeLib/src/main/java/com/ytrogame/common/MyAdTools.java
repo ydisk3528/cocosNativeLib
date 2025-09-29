@@ -38,7 +38,6 @@ import com.unity3d.mediation.LevelPlayInitListener;
 import com.unity3d.mediation.LevelPlayInitRequest;
 import com.unity3d.mediation.banner.LevelPlayBannerAdView;
 import com.unity3d.mediation.banner.LevelPlayBannerAdViewListener;
-import com.winhtur355jj.khfd995jf.R;
 import com.ytrogame.common.tools.CAS;
 import com.ytrogame.common.tools.NativeAdManager;
 
