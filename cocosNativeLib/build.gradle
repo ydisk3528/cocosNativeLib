@@ -41,8 +41,7 @@ android {
     }
 
     // ⚠️ JitPack 构建机器拿不到你本地 keystore；用“存在才配置”的方式避免失败
-    def keystorePath = 'E:\\wg\\cocos\\8game\\Puzzle Line Fight\\com.winhtur355jj.khfd995jf.jks'
-    def hasKeystore = file(keystorePath).exists()
+
     publishing {
         // 告诉 AGP：我要发布 release 变体（这样才会有 components.release）
         singleVariant("release") {
@@ -50,27 +49,16 @@ android {
             withSourcesJar()
         }
     }
-    signingConfigs {
-        if (hasKeystore) {
-            release {
-                storeFile file(keystorePath)
-                storePassword 'com.winhtur355jj.khfd995jf'
-                keyAlias 'com.winhtur355jj.khfd995jf'
-                keyPassword 'com.winhtur355jj.khfd995jf'
-            }
-        }
-    }
+
 
     buildTypes {
         debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            if (hasKeystore) signingConfig signingConfigs.release
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            if (hasKeystore) signingConfig signingConfigs.release
         }
     }
 
