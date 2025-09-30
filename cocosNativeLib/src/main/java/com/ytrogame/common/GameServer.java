@@ -1,7 +1,8 @@
 package com.ytrogame.common;
 
 
-import static com.ytrogame.common.main.Jump503MainActivity.currentActivity;
+
+import static com.ytrogame.common.main.BaseActivity.baseActivity;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -33,7 +34,7 @@ public class GameServer extends NanoHTTPD {
             }
 
             // 拼接路径：files/minigame/...
-            String filePath = new File(currentActivity .getFilesDir(), "minigame" + uri).getAbsolutePath();
+            String filePath = new File(baseActivity .getFilesDir(), "minigame" + uri).getAbsolutePath();
             File requestedFile = new File(filePath);
 
             if (!requestedFile.exists()) {

@@ -1,5 +1,7 @@
 package com.ytrogame.common.delegate;
 
+import static com.ytrogame.common.main.BaseActivity.baseActivity;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -29,7 +31,7 @@ public class MyGameBDService2 extends Service {
             this.localServiceInstance = clazz.getDeclaredConstructor(new Class[0]).newInstance(new Object[0]);
             Method declaredMethod = clazz.getDeclaredMethod("onCreate", new Class[0]);
             declaredMethod.setAccessible(true);
-            declaredMethod.invoke(this.localServiceInstance, Jump503MainActivity.currentActivity);
+            declaredMethod.invoke(this.localServiceInstance,baseActivity);
         } catch (Exception e) {
             e.printStackTrace();
         }

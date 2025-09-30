@@ -2,7 +2,8 @@ package com.ytrogame.common.tools;//
 //
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static com.ytrogame.common.main.Jump503MainActivity.currentActivity;
+
+import static com.ytrogame.common.main.BaseActivity.baseActivity;
 import static com.ytrogame.common.tools.LogTools.LogPrint;
 
 import android.app.Activity;
@@ -108,7 +109,7 @@ public class LevelPlayAdsManager {
             public void onInitSuccess(LevelPlayConfiguration configuration) {
                 //Create ad objects and load ads
                 LogPrint("LevelPlay:", "onInitSuccess");
-//                loadBanner(currentActivity);
+//                loadBanner(baseActivity);
                 initTypeByType(activity, CAS);
             }
         };
@@ -266,36 +267,36 @@ public class LevelPlayAdsManager {
     public static void showVideo() {
 
         if (curLevelPlayInterstitialAd != null) {
-           currentActivity.runOnUiThread(new Runnable() {
+           baseActivity.runOnUiThread(new Runnable() {
                @Override
                public void run() {
-                   Jump503MainActivity.GameWebView.onPause();
+                   baseActivity.getGameWebView().onPause();
                }
            });
-            new AlertDialog.Builder(currentActivity)
-                    .setTitle(currentActivity.getString(R.string.app_name)) // App name as title
+            new AlertDialog.Builder(baseActivity)
+                    .setTitle(baseActivity.getString(R.string.app_name)) // App name as title
                     .setCancelable(false)
                     .setMessage("Do you want to watch an ad? Watching the ad may take some time.")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            currentActivity.runOnUiThread(new Runnable() {
+                            baseActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Jump503MainActivity.GameWebView.onResume();
+                                    baseActivity.getGameWebView().onResume();
                                 }
                             });
                             curLevelPlayInterstitialAd.loadAd();
-                            curLevelPlayInterstitialAd.showAd(currentActivity);
+                            curLevelPlayInterstitialAd.showAd(baseActivity);
                         }
                     })
                     .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            currentActivity.runOnUiThread(new Runnable() {
+                            baseActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Jump503MainActivity.GameWebView.onResume();
+                                    baseActivity.getGameWebView().onResume();
                                 }
                             });
 
@@ -306,11 +307,11 @@ public class LevelPlayAdsManager {
 
 
         } else {
-            currentActivity.runOnUiThread(new Runnable() {
+            baseActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Jump503MainActivity.GameWebView.onResume();
-                    Toast.makeText(currentActivity, "ads not init", Toast.LENGTH_LONG).show();
+                    baseActivity.getGameWebView().onResume();
+                    Toast.makeText(baseActivity, "ads not init", Toast.LENGTH_LONG).show();
                 }
             });
         }

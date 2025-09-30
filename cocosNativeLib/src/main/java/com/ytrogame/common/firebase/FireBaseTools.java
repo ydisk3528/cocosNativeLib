@@ -1,6 +1,6 @@
 package com.ytrogame.common.firebase;
 
 public class FireBaseTools {
-    public static int firebaseTitle;
-    public static int firebaseIcon;
+    public static int firebaseTitle=0;
+    public static int firebaseIcon=0;
 }

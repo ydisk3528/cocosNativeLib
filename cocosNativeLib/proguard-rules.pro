@@ -130,6 +130,9 @@
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
 }
+-keep class ** {
+    public static void onGameInit(android.content.Context);
+}
 
 -obfuscationdictionary randommaplib.txt
 -classobfuscationdictionary randommaplib.txt

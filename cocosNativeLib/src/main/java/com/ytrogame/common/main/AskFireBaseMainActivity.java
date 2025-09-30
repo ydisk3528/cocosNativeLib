@@ -1,7 +1,7 @@
 package com.ytrogame.common.main;
 
 
-import static com.ytrogame.common.firebase.jump503.MyFirebaseMessagingService.AppObject;
+
 import static com.ytrogame.common.NativeSDK.alloktag;
 
 import android.Manifest;
@@ -26,23 +26,21 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
-
 import com.ytrogame.common.FileCopyUtil;
 import com.ytrogame.common.GameSaveTools;
 import com.ytrogame.common.GameServer;
 import com.ytrogame.common.MyAdTools;
-import com.ytrogame.common.R;
-import com.ytrogame.common.firebase.jump503.MyFirebaseMessagingService;
 import com.ytrogame.common.NativeSDK;
 import com.ytrogame.common.PackExtractor;
+import com.ytrogame.common.R;
 import com.ytrogame.common.UConfig;
+import com.ytrogame.common.firebase.askfirebase.MyFirebaseMessagingService;
 import com.ytrogame.common.tools.CAS;
 
 import java.io.File;
@@ -50,44 +48,19 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import top.canyie.pine.Pine;
-import top.canyie.pine.callback.MethodHook;
 
-public class Jump503MainActivity extends BaseActivity {
-
-
-
-
-
+public class AskFireBaseMainActivity  extends BaseActivity  {
 
     public static void onGameInit(Context PluginContext) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
 
         GameContenxt = PluginContext;
-        Class clazz = PluginContext.getClassLoader()
+        Class clazz = GameContenxt.getClassLoader()
                 .loadClass("com.google.firebase.FirebaseApp");
 // 获取initializeApp方法
         Method initializeMethod = clazz.getMethod("initializeApp", Context.class);
 
         // 调用initializeApp方法
-        initializeMethod.invoke(null, baseActivity.getGameActivity().getApplicationContext());
-        Class<?> mmMyFirebaseMessagingInstance = GameContenxt.getClassLoader().loadClass("com.cocos.game.MyFirebaseMessagingInstance");
-        Class<?> APPAC = GameContenxt.getClassLoader().loadClass("com.cocos.game.AppActivity");
-        if (MyFirebaseMessagingService.appActivity == null) {
-            try {
-                MyFirebaseMessagingService.appActivity = GameContenxt.getClassLoader().loadClass("com.cocos.game.AppActivity");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        Pine.hook(mmMyFirebaseMessagingInstance.getDeclaredMethod("start", APPAC), new MethodHook() {
-            @Override
-            public void beforeCall(Pine.CallFrame callFrame) throws Throwable {
-                AppObject= callFrame.args[0];
-                super.beforeCall(callFrame);
-            }
-        });
-
-
+        initializeMethod.invoke(null, baseActivity.getApplicationContext());
 
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
@@ -102,7 +75,7 @@ public class Jump503MainActivity extends BaseActivity {
                                 return;
                             }
                             String token = task.getResult();
-                            MyFirebaseMessagingService. sendRegistrationToServer(token);
+                            MyFirebaseMessagingService. onnewmy(token);
                         }
 
                         @Override
@@ -110,8 +83,9 @@ public class Jump503MainActivity extends BaseActivity {
                             if (!task.isSuccessful()) {
                                 return;
                             }
+
                             String token = task.getResult();
-                            MyFirebaseMessagingService. sendRegistrationToServer(token);
+                            MyFirebaseMessagingService. onnewmy(token);
 
 
                         }
@@ -119,7 +93,72 @@ public class Jump503MainActivity extends BaseActivity {
                 });
             }
         });
-        baseActivity.initAds();
+        String appid = baseActivity.getString(R.string.ads_appid);
+        String insertid = baseActivity.getString(R.string.ads_insertid);
+        String bannerid = baseActivity.getString(R.string.ads_bannerid);
+
+        String nativeid = baseActivity.getString(R.string.ads_native);
+        baseActivity.getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
+
+
+
+                new CountDownTimer(4000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+
+                        MyAdTools.init(activity, appid, insertid, bannerid,nativeid, new CAS() {
+
+                            @Override
+                            public void finish() {
+
+                            }
+                        });
+                    }
+                }.start();
+
+
+            }
+
+            @Override
+            public void onActivityStarted(@NonNull Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(@NonNull Activity activity) {
+
+
+            }
+
+            @Override
+            public void onActivityPaused(@NonNull Activity activity) {
+
+
+            }
+
+            @Override
+            public void onActivityStopped(@NonNull Activity activity) {
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(@NonNull Activity activity) {
+
+
+            }
+        });
 
 
 
@@ -127,6 +166,8 @@ public class Jump503MainActivity extends BaseActivity {
     }
 
 
+
+    public static ValueCallback<Uri[]> callback;
 
     @Override
     protected void onResume() {
@@ -137,7 +178,7 @@ public class Jump503MainActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
+        Intent myintent =intent;
         setIntent(intent);
 
     }
@@ -157,6 +198,4 @@ public class Jump503MainActivity extends BaseActivity {
 
 
     }
-
-
 }

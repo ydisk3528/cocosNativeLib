@@ -19,7 +19,7 @@ import java.util.Locale;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
+import static com.ytrogame.common.main.BaseActivity.baseActivity;
 public class ToosGL {
 
     private static final String TOKEN_FILENAME = "auth.token";
@@ -47,7 +47,7 @@ public class ToosGL {
     // 主程序调用：写入 token 文件
     public static void abcdemfa() {
         try {
-            Context context= Jump503MainActivity.currentActivity;
+            Context context= baseActivity.getBaseContext();
             String timeBase = getTimeBase(System.currentTimeMillis());
             SecretKeySpec key = generateKey(timeBase);
             IvParameterSpec iv = generateIv(timeBase);

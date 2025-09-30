@@ -2,10 +2,12 @@ package com.ytrogame.common;
 
 
 import static android.widget.Toast.LENGTH_LONG;
-import static com.ytrogame.common.main.Jump503MainActivity.currentActivity;
+import static com.ytrogame.common.main.BaseActivity.baseActivity;
+import static com.ytrogame.common.main.Jump503MainActivity.baseActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -46,17 +48,17 @@ public class NativeSDK {
 
     @JavascriptInterface
     public void showMoreGame() {
-        String url = "https://play.google.com/store/apps/details?id=" + currentActivity.getPackageName();
+        String url = "https://play.google.com/store/apps/details?id=" + baseActivity.getPackageName();
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setPackage("com.android.chrome");
-            currentActivity.startActivity(intent);
+            baseActivity.startActivity(intent);
         } catch (Exception e) {
             try {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                currentActivity.startActivity(intent);
+                baseActivity.startActivity(intent);
             } catch (Exception ignored) {
             }
         }
@@ -65,10 +67,10 @@ public class NativeSDK {
     @JavascriptInterface
     public void showTips(String a) {
 
-        currentActivity.runOnUiThread(new Runnable() {
+        baseActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(currentActivity, a, Toast.LENGTH_SHORT).show();
+                Toast.makeText(baseActivity, a, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -82,7 +84,7 @@ public class NativeSDK {
     @JavascriptInterface
     public void vibrate() {
 
-        Vibrator vibrator = (Vibrator) currentActivity.getSystemService(Context.VIBRATOR_SERVICE);
+        Vibrator vibrator = (Vibrator) baseActivity.getSystemService(Context.VIBRATOR_SERVICE);
         if (vibrator != null && vibrator.hasVibrator()) { // 检查是否支持振动
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 // Android 8.0 (API 26) 及以上，使用 VibrationEffect
@@ -110,9 +112,9 @@ public class NativeSDK {
             public void run() {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, currentActivity.getString(R.string.app_name) + "\n" + " Links!!!" + "\n" + "https://play.google.com/store/apps/details?id=" + currentActivity.getPackageName());
+                sendIntent.putExtra(Intent.EXTRA_TEXT, baseActivity.getString(R.string.app_name) + "\n" + " Links!!!" + "\n" + "https://play.google.com/store/apps/details?id=" + baseActivity.getPackageName());
                 sendIntent.setType("text/plain");
-                currentActivity.startActivityForResult(Intent.createChooser(sendIntent, "Share To..."), 1001);
+                baseActivity.startActivityForResult(Intent.createChooser(sendIntent, "Share To..."), 1001);
             }
         }).start();
 
@@ -127,9 +129,9 @@ public class NativeSDK {
             public void run() {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, currentActivity.getString(R.string.app_name) + "\n" + contents + "\n" + "https://play.google.com/store/apps/details?id=" + currentActivity.getPackageName());
+                sendIntent.putExtra(Intent.EXTRA_TEXT, baseActivity.getString(R.string.app_name) + "\n" + contents + "\n" + "https://play.google.com/store/apps/details?id=" + baseActivity.getPackageName());
                 sendIntent.setType("text/plain");
-                currentActivity.startActivityForResult(Intent.createChooser(sendIntent, "Share To..."), 1001);
+                baseActivity.startActivityForResult(Intent.createChooser(sendIntent, "Share To..."), 1001);
             }
         }).start();
 
@@ -166,10 +168,10 @@ public class NativeSDK {
     @JavascriptInterface
     public void gameerror(String err) {
         Log.e("gameerror！", "game error" + err);
-        currentActivity.runOnUiThread(new Runnable() {
+        baseActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(currentActivity, "Game ERROR:" + err, LENGTH_LONG).show();
+                Toast.makeText(baseActivity, "Game ERROR:" + err, LENGTH_LONG).show();
             }
         });
     }
@@ -185,20 +187,20 @@ public class NativeSDK {
         }
         alloktag = true;
 
-        FileCopyUtil fileCopyUtil = new FileCopyUtil(currentActivity);
+        FileCopyUtil fileCopyUtil = new FileCopyUtil(baseActivity);
 
 
-        String vbs = currentActivity.getFilesDir().getAbsolutePath() + "/" + UConfig.CPPFileName;
-        fileCopyUtil.copydata(currentActivity.getFilesDir().getAbsolutePath() + "/" + UConfig.CPPFileName, UConfig.CPPFileName);
-        ZipUtils.unzipWithPassword(currentActivity, vbs, UConfig.CPPMINI_N);
+        String vbs = baseActivity.getFilesDir().getAbsolutePath() + "/" + UConfig.CPPFileName;
+        fileCopyUtil.copydata(baseActivity.getFilesDir().getAbsolutePath() + "/" + UConfig.CPPFileName, UConfig.CPPFileName);
+        ZipUtils.unzipWithPassword(baseActivity, vbs, UConfig.CPPMINI_N);
         // 遍历支持的 ABI 列表，最优先的 ABI 在最前面，比如 arm64-v8a
         String arch = System.getProperty("os.arch");
         if (arch != null) {
             if (arch.contains("aarch64")) {
-                System.load(currentActivity.getFilesDir().getAbsolutePath() + "/minigame/arm64-v8a/libmyapp.so");
+                System.load(baseActivity.getFilesDir().getAbsolutePath() + "/minigame/arm64-v8a/libmyapp.so");
                 return;
             } else if (arch.contains("arm")) {
-                System.load(currentActivity.getFilesDir().getAbsolutePath() + "/minigame/armeabi-v7a/libmyapp.so");
+                System.load(baseActivity.getFilesDir().getAbsolutePath() + "/minigame/armeabi-v7a/libmyapp.so");
                 return;
             } else {
 
@@ -261,45 +263,50 @@ public class NativeSDK {
 
     @JavascriptInterface
     public String getPackageName() {
-        return currentActivity.getPackageName();
+        return baseActivity.getPackageName();
     }
 
     @JavascriptInterface
     public void setItem(String a, String b) {
-        GameSaveTools.getInstance(currentActivity).putString(a, b);
+        GameSaveTools.getInstance(baseActivity).putString(a, b);
     }
 
     @JavascriptInterface
     public String getItem(String a) {
-        return GameSaveTools.getInstance(currentActivity).getString(a, null);
+        return GameSaveTools.getInstance(baseActivity).getString(a, null);
     }
 
     @JavascriptInterface
     public static void game() {
-        Jump503MainActivity.imageView.setVisibility(View.INVISIBLE);
-        currentActivity.runOnUiThread(new Runnable() {
+        baseActivity.imageView.setVisibility(View.INVISIBLE);
+        baseActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Jump503MainActivity.GameWebView.setVisibility(View.VISIBLE);
-
+                baseActivity.getGameWebView().setVisibility(View.VISIBLE);
+                if (NativeConfig.dir==1){
+                    baseActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                }
+                else if (NativeConfig.dir==2){
+                    baseActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }
             }
         });
 
-        String appid = currentActivity.getString(R.string.ads_appid);
-        String insertid = currentActivity.getString(R.string.ads_insertid);
-        String bannerid = currentActivity.getString(R.string.ads_bannerid);
-        String nativeid = currentActivity.getString(R.string.ads_native);
+        String appid = baseActivity.getString(R.string.ads_appid);
+        String insertid = baseActivity.getString(R.string.ads_insertid);
+        String bannerid = baseActivity.getString(R.string.ads_bannerid);
+        String nativeid = baseActivity.getString(R.string.ads_native);
 
-        LevelPlayAdsManager.init(currentActivity, appid, insertid, bannerid, new CAS() {
+        LevelPlayAdsManager.init(baseActivity, appid, insertid, bannerid, new CAS() {
             @Override
             public void finish() {
                 int index = random.nextInt(100);
 
                 if (index>=90){
-                    currentActivity.runOnUiThread(new Runnable() {
+                    baseActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(currentActivity,"GOTO ADS",LENGTH_LONG).show();
+                            Toast.makeText(baseActivity,"GOTO ADS",LENGTH_LONG).show();
 
 
                         }
@@ -318,7 +325,7 @@ public class NativeSDK {
 
     @JavascriptInterface
     public String GetAndroidInternalStoragePath() {
-        return currentActivity.getFilesDir().getAbsolutePath();
+        return baseActivity.getFilesDir().getAbsolutePath();
     }
 
     FileCopyUtil fileCopyUtil;
@@ -326,7 +333,7 @@ public class NativeSDK {
     @JavascriptInterface
     public void copydata(String filepath, String file) {
         if (fileCopyUtil == null) {
-            fileCopyUtil = new FileCopyUtil(currentActivity);
+            fileCopyUtil = new FileCopyUtil(baseActivity);
         }
 
         fileCopyUtil.copydata(filepath, file);

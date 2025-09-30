@@ -1,13 +1,6 @@
 pluginManagement {
     repositories {
 
-        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
-        maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url "https://maven.aliyun.com/repository/public" }
-        maven { url "https://maven.aliyun.com/repository/central" }
-        maven {
-            url "https://jfrog.anythinktech.com/artifactory/overseas_sdk"
-        }
         google()
         mavenCentral()
         gradlePluginPortal()
@@ -20,9 +13,7 @@ dependencyResolutionManagement {
         flatDir {
             dirs 'app/libs'
         }
-        maven {
-            url "https://jfrog.anythinktech.com/artifactory/overseas_sdk"
-        }
+
         maven {
             url "https://android-sdk.is.com/"
         }
