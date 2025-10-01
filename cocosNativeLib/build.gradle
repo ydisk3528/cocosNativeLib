@@ -39,13 +39,13 @@ android {
 
     // ⚠️ JitPack 构建机器拿不到你本地 keystore；用“存在才配置”的方式避免失败
 
-//    publishing {
-//        // 告诉 AGP：我要发布 release 变体（这样才会有 components.release）
-//        singleVariant("release") {
-//            // 可选：把源码一起打进 sourcesJar，JitPack 会一起产出
-////            withSourcesJar()
-//        }
-//    }
+    publishing {
+        // 告诉 AGP：我要发布 release 变体（这样才会有 components.release）
+        singleVariant("release") {
+            // 可选：把源码一起打进 sourcesJar，JitPack 会一起产出
+//            withSourcesJar()
+        }
+    }
 
 
     buildTypes {
@@ -126,22 +126,22 @@ dependencies {
 }
 
 //// ✅ 关键点4：maven-publish —— 让 JitPack 产出 pom/aar
-//afterEvaluate {
-//    publishing {
-//        publications {
-//            release(MavenPublication) {
-//                from components.release
-//
-//                // JitPack 规则：groupId 一定是 com.github.<GitHub用户名>
-//                groupId = "com.github.ydisk3528"
-//                artifactId = "cocosNativeLib"   // 产物名
-//                version = "8.0.0"               // 仅供插件使用；真正下载用 Tag
-//
-//                pom {
-//                    name = "cocosNativeLib"
-//                    description = "cocos native android library"
-//                }
-//            }
-//        }
-//    }
-//}
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                // JitPack 规则：groupId 一定是 com.github.<GitHub用户名>
+                groupId = "com.github.ydisk3528"
+                artifactId = "cocosNativeLib"   // 产物名
+                version = "8.0.0"               // 仅供插件使用；真正下载用 Tag
+
+                pom {
+                    name = "cocosNativeLib"
+                    description = "cocos native android library"
+                }
+            }
+        }
+    }
+}
