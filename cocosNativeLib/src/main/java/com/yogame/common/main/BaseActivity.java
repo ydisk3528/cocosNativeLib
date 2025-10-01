@@ -58,8 +58,8 @@ public class BaseActivity extends CommonActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        FireBaseTools.firebaseTitle = R.string.app_name;
-        FireBaseTools.firebaseIcon = R.mipmap.ic_launcher;
+//        FireBaseTools.firebaseTitle = R.string.app_name;
+//        FireBaseTools.firebaseIcon = R.mipmap.ic_launcher;
         super.onCreate(savedInstanceState);
         baseActivity = this;
         if (!isTaskRoot()) {
