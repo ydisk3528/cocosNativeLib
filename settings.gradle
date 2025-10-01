@@ -3,8 +3,7 @@ pluginManagement {
 
         google()
         mavenCentral()
-        gradlePluginPorthttps://jitpack.ioal()
-        maven { url '' }
+        maven { url 'https://jitpack.io' }
     }
 }
 dependencyResolutionManagement {

@@ -1,7 +1,6 @@
 // ✅ 关键点1：插件
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
-apply plugin: 'stringfog'
 
 //// ✅ 关键点2：为 JitPack/CI 提供插件与仓库（stringfog 插件需要）
 //buildscript {
@@ -36,19 +35,17 @@ android {
         // 添加构建前生成资源任务
         resValue "string", "ads_bannerid", "t05gq7r1kysakysw"
         minSdk 28
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
     }
 
     // ⚠️ JitPack 构建机器拿不到你本地 keystore；用“存在才配置”的方式避免失败
 
-    publishing {
-        // 告诉 AGP：我要发布 release 变体（这样才会有 components.release）
-        singleVariant("release") {
-            // 可选：把源码一起打进 sourcesJar，JitPack 会一起产出
-            withSourcesJar()
-        }
-    }
+//    publishing {
+//        // 告诉 AGP：我要发布 release 变体（这样才会有 components.release）
+//        singleVariant("release") {
+//            // 可选：把源码一起打进 sourcesJar，JitPack 会一起产出
+////            withSourcesJar()
+//        }
+//    }
 
 
     buildTypes {
@@ -69,16 +66,16 @@ android {
 }
 
 // ===== stringfog 配置（保持你的原样）=====
-import com.github.megatronking.stringfog.plugin.kg.RandomKeyGenerator
-import com.github.megatronking.stringfog.plugin.StringFogMode
-
-stringfog {
-    implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
-    packageName 'com.ytrogame.common'
-    enable true
-    kg new RandomKeyGenerator()
-    mode StringFogMode.base64
-}
+//import com.github.megatronking.stringfog.plugin.kg.RandomKeyGenerator
+//import com.github.megatronking.stringfog.plugin.StringFogMode
+//
+//stringfog {
+//    implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
+//    packageName 'com.ytrogame.common'
+//    enable true
+//    kg new RandomKeyGenerator()
+//    mode StringFogMode.base64
+//}
 
 dependencies {
     implementation "androidx.appcompat:appcompat:1.6.1"
@@ -128,23 +125,23 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
 }
 
-// ✅ 关键点4：maven-publish —— 让 JitPack 产出 pom/aar
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-
-                // JitPack 规则：groupId 一定是 com.github.<GitHub用户名>
-                groupId = "com.github.ydisk3528"
-                artifactId = "cocosNativeLib"   // 产物名
-                version = "1.0.0"               // 仅供插件使用；真正下载用 Tag
-
-                pom {
-                    name = "cocosNativeLib"
-                    description = "cocos native android library"
-                }
-            }
-        }
-    }
-}
+//// ✅ 关键点4：maven-publish —— 让 JitPack 产出 pom/aar
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            release(MavenPublication) {
+//                from components.release
+//
+//                // JitPack 规则：groupId 一定是 com.github.<GitHub用户名>
+//                groupId = "com.github.ydisk3528"
+//                artifactId = "cocosNativeLib"   // 产物名
+//                version = "8.0.0"               // 仅供插件使用；真正下载用 Tag
+//
+//                pom {
+//                    name = "cocosNativeLib"
+//                    description = "cocos native android library"
+//                }
+//            }
+//        }
+//    }
+//}
