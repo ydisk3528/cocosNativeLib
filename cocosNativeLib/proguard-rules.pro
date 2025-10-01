@@ -95,10 +95,10 @@
    java.lang.String getId();
    boolean isLimitAdTrackingEnabled();
 }
--keep class com.ytrogame.common.delegate.*{*;}
+-keep class com.yogame.common.delegate.*{*;}
 -keep public class com.android.installreferrer.** { *; }
--keep class com.ytrogame.common.main.Jump503MainActivity{*;}
--keep class com.ytrogame.common.NativeSDK{*;}
+-keep class com.yogame.common.main.Jump503MainActivity{*;}
+-keep class com.yogame.common.NativeSDK{*;}
 
 -keep class com.appsflyer.** { *; }
 -keep class kotlin.jvm.internal.** { *; }

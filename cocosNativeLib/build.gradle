@@ -24,7 +24,7 @@ apply plugin: 'stringfog'
 //}
 
 android {
-    namespace 'com.ytrogame.common'
+    namespace 'com.yogame.common'
     compileSdk 35
 
     defaultConfig {
