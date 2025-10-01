@@ -128,26 +128,6 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
 }
 
-// ===== 构建前生成 randommaplib.txt（保持你的原样）=====
-task generateRandomDictionary {
-    def dictFile = file("$projectDir/randommaplib.txt")
-    outputs.file dictFile
-    doLast {
-        dictFile.parentFile.mkdirs()
-        dictFile.withWriter("UTF-8") { writer ->
-            def random = new Random()
-            (1..100).each { idx ->
-                def name = (5..(10 + random.nextInt(15))).collect {
-                    (('a'..'z') + ('A'..'Z'))[random.nextInt(52)]
-                }.join("")
-                writer.writeLine(name)
-            }
-        }
-        println "✅ randommaplib.txt 已生成: ${dictFile}"
-    }
-}
-preBuild.dependsOn(generateRandomDictionary)
-
 // ✅ 关键点4：maven-publish —— 让 JitPack 产出 pom/aar
 afterEvaluate {
     publishing {
