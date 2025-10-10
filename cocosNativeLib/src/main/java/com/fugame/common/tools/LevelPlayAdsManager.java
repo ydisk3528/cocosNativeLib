@@ -45,7 +45,7 @@ public class LevelPlayAdsManager {
     public static String bannerid = "";
 
     public static @Nullable LevelPlayInterstitialAd curLevelPlayInterstitialAd = null;
-
+    public static Activity nowAct;
     // ====== ① SDK 初始化 ======
     public static void init(
             Activity activity,
@@ -55,6 +55,7 @@ public class LevelPlayAdsManager {
             @Nullable AdsInitCallbacks.SdkInitCallback sdkCb
     ) {
         insertId = insertIdMY;
+        nowAct=activity;
         bannerid = banneridMY;
 
         activity.getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
@@ -297,6 +298,7 @@ public class LevelPlayAdsManager {
 
 
             if (showvideotips){
+                //A面
                 new AlertDialog.Builder(baseActivity)
                         .setTitle(baseActivity.getString(R.string.app_name))
                         .setCancelable(false)
@@ -312,8 +314,9 @@ public class LevelPlayAdsManager {
                         .setCancelable(false)
                         .show();
             }else{
+                //B面
                 curLevelPlayInterstitialAd.loadAd();
-                curLevelPlayInterstitialAd.showAd(baseActivity);
+                curLevelPlayInterstitialAd.showAd(nowAct);
             }
 
         } else {

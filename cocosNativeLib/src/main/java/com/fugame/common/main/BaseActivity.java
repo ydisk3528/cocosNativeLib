@@ -249,12 +249,12 @@ public class BaseActivity extends CommonActivity {
                     @Override
                     public void onFinish() {
 
-                        LevelPlayAdsManager.init(baseActivity, appid, insertid, bannerid,new AdsInitCallbacks.SdkInitCallback() {
+                        LevelPlayAdsManager.init(activity, appid, insertid, bannerid,new AdsInitCallbacks.SdkInitCallback() {
                             @Override
                             public void onSuccess(LevelPlayConfiguration configuration) {
                                 LogPrint("LevelPlay", "init onSuccess: ");
                                 extendInitCallback.finish();
-                                LevelPlayAdsManager.initBanner(baseActivity, new AdsInitCallbacks.BannerInitCallback() {
+                                LevelPlayAdsManager.initBanner(activity, new AdsInitCallbacks.BannerInitCallback() {
                                     @Override
                                     public void onReady(LevelPlayBannerAdView bannerView) {
                                         LogPrint("LevelPlay", "initBanner onReady: " );
