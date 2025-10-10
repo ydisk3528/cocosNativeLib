@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fugame.common.GameServer;
+import com.fugame.common.tools.AdsInitCallbacks;
 
 public abstract class CommonActivity extends AppCompatActivity {
     protected  Activity currentActivity;

@@ -151,7 +151,7 @@ afterEvaluate {
                 // JitPack 规则：groupId 一定是 com.github.<GitHub用户名>
                 groupId = "com.github.ydisk3528"
                 artifactId = "cocosNativeLib"   // 产物名
-                version = "11.0.0"               // 仅供插件使用；真正下载用 Tag
+                version = "12.0.0"               // 仅供插件使用；真正下载用 Tag
 
                 pom {
                     name = "cocosNativeLib"

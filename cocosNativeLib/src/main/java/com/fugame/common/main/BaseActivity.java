@@ -1,6 +1,9 @@
 package com.fugame.common.main;
 
 import static com.fugame.common.NativeSDK.alloktag;
+import static com.fugame.common.tools.LevelPlayAdsManager.extendInitCallback;
+import static com.fugame.common.tools.LevelPlayAdsManager.initInterstitial;
+import static com.fugame.common.tools.LogTools.LogPrint;
 
 import android.Manifest;
 import android.app.Activity;
@@ -30,7 +33,11 @@ import com.fugame.common.NativeSDK;
 import com.fugame.common.PackExtractor;
 import com.fugame.common.R;
 import com.fugame.common.UConfig;
+import com.fugame.common.tools.AdsInitCallbacks;
 import com.fugame.common.tools.CAS;
+import com.fugame.common.tools.LevelPlayAdsManager;
+import com.unity3d.mediation.LevelPlayConfiguration;
+import com.unity3d.mediation.banner.LevelPlayBannerAdView;
 
 import java.io.File;
 import java.io.IOException;
@@ -226,10 +233,10 @@ public class BaseActivity extends CommonActivity {
 
     @Override
     public void initAds() {
-        String appid = MyAdTools.adid;
-        String insertid = MyAdTools.insertId;
-        String bannerid = MyAdTools.bannerid;
-        String nativeid = MyAdTools.navid;
+        String appid = baseActivity.getString(R.string.ads_appid);
+        String insertid = baseActivity.getString(R.string.ads_insertid);
+        String bannerid = baseActivity.getString(R.string.ads_bannerid);
+        String nativeid = baseActivity.getString(R.string.ads_native);
         baseActivity.getGameActivity().getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
@@ -242,12 +249,30 @@ public class BaseActivity extends CommonActivity {
                     @Override
                     public void onFinish() {
 
+                        LevelPlayAdsManager.init(baseActivity, appid, insertid, bannerid,new AdsInitCallbacks.SdkInitCallback() {
+                            @Override
+                            public void onSuccess(LevelPlayConfiguration configuration) {
+                                LogPrint("LevelPlay", "init onSuccess: ");
+                                extendInitCallback.finish();
+                                LevelPlayAdsManager.initBanner(baseActivity, new AdsInitCallbacks.BannerInitCallback() {
+                                    @Override
+                                    public void onReady(LevelPlayBannerAdView bannerView) {
+                                        LogPrint("LevelPlay", "initBanner onReady: " );
+                                    }
 
-                        MyAdTools.init(activity, appid, insertid, bannerid, nativeid, new CAS() {
+                                    @Override
+                                    public void onFail(String message, @Nullable Throwable error) {
+                                        LogPrint("LevelPlay", "initBanner onFail: " + message);
+                                    }
+                                });
+
+
+
+                            }
 
                             @Override
-                            public void finish() {
-
+                            public void onFail(String message, @Nullable Throwable error) {
+                                LogPrint("LevelPlay", "init onFail: " + message);
                             }
                         });
                     }

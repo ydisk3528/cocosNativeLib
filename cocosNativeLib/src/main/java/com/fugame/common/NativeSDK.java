@@ -3,6 +3,7 @@ package com.fugame.common;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static com.fugame.common.main.BaseActivity.baseActivity;
+import static com.fugame.common.tools.LogTools.LogPrint;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,10 +16,15 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
+import com.fugame.common.tools.AdsInitCallbacks;
 import com.fugame.common.tools.CAS;
 import com.fugame.common.tools.LevelPlayAdsManager;
 import com.fugame.common.tools.ToosGL;
 import com.fugame.common.tools.ZipUtils;
+import com.unity3d.mediation.LevelPlayConfiguration;
+import com.unity3d.mediation.banner.LevelPlayBannerAdView;
 
 import org.json.JSONException;
 
@@ -281,39 +287,45 @@ public class NativeSDK {
             @Override
             public void run() {
                 baseActivity.getGameWebView().setVisibility(View.VISIBLE);
-                if (NativeConfig.dir==1){
+                if (NativeConfig.dir == 1) {
                     baseActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                }
-                else if (NativeConfig.dir==2){
+                } else if (NativeConfig.dir == 2) {
                     baseActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 }
             }
         });
-
-        String appid = baseActivity.getString(R.string.ads_appid);
-        String insertid = baseActivity.getString(R.string.ads_insertid);
-        String bannerid = baseActivity.getString(R.string.ads_bannerid);
-        String nativeid = baseActivity.getString(R.string.ads_native);
-
-        LevelPlayAdsManager.init(baseActivity, appid, insertid, bannerid, new CAS() {
+        LevelPlayAdsManager.extendInitCallback = new CAS() {
             @Override
             public void finish() {
-                int index = random.nextInt(100);
+                LevelPlayAdsManager.initInterstitial(baseActivity, new AdsInitCallbacks.InterstitialInitCallback() {
+                    @Override
+                    public void onReady() {
+                        LogPrint("levelPlay", "initInterstitial onReady");
+                    }
 
-                if (index>=90){
-                    baseActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(baseActivity,"GOTO ADS",LENGTH_LONG).show();
+                    @Override
+                    public void onFail(String message, @Nullable Throwable error) {
+                        LogPrint("levelPlay", "initInterstitial onFail:" + message);
+                    }
 
+                    @Override
+                    public void onShowReady() {
 
-                        }
-                    });
-                }
+                    }
 
+                    @Override
+                    public void onShowEnd(String message, @Nullable Throwable error) {
 
+                    }
+
+                    @Override
+                    public void onShowFail(String message, @Nullable Throwable error) {
+
+                    }
+                });
             }
-        });
+        };
+        baseActivity.initAds();
     }
 
 //    @JavascriptInterface

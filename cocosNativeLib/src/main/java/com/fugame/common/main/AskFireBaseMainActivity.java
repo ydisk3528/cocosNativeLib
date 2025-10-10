@@ -73,72 +73,9 @@ public class AskFireBaseMainActivity  extends BaseActivity  {
                 });
             }
         });
-        String appid = baseActivity.getString(R.string.ads_appid);
-        String insertid = baseActivity.getString(R.string.ads_insertid);
-        String bannerid = baseActivity.getString(R.string.ads_bannerid);
 
-        String nativeid = baseActivity.getString(R.string.ads_native);
-        baseActivity.getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
+        baseActivity.initAds();
 
-
-
-                new CountDownTimer(4000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-
-                        MyAdTools.init(activity, appid, insertid, bannerid,nativeid, new CAS() {
-
-                            @Override
-                            public void finish() {
-
-                            }
-                        });
-                    }
-                }.start();
-
-
-            }
-
-            @Override
-            public void onActivityStarted(@NonNull Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityResumed(@NonNull Activity activity) {
-
-
-            }
-
-            @Override
-            public void onActivityPaused(@NonNull Activity activity) {
-
-
-            }
-
-            @Override
-            public void onActivityStopped(@NonNull Activity activity) {
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
-
-            }
-
-            @Override
-            public void onActivityDestroyed(@NonNull Activity activity) {
-
-
-            }
-        });
 
 
 

@@ -14,17 +14,23 @@ import android.webkit.WebChromeClient;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.fugame.common.tools.AdsInitCallbacks;
+import com.fugame.common.tools.LevelPlayAdsManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.fugame.common.GameSaveTools;
 import static com.fugame.common.firebase.pushid.MyFirebaseMessagingService.myids;
+import static com.fugame.common.tools.LogTools.LogPrint;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.fugame.common.MyAdTools;
 import com.fugame.common.R;
 import  com.fugame.common.firebase.pushid.MyFirebaseMessagingService;
+import com.unity3d.mediation.LevelPlayConfiguration;
+import com.unity3d.mediation.banner.LevelPlayBannerAdView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
