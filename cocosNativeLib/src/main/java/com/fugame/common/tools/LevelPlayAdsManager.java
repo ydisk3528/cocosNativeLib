@@ -12,6 +12,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -43,7 +44,9 @@ public class LevelPlayAdsManager {
     public static CAS extendInitCallback;
     public static String insertId = "";
     public static String bannerid = "";
-
+    public static  float bannerX=0f;
+    public static  float vis=0.01f;
+    public static  float bannerY=0.6f;
     public static @Nullable LevelPlayInterstitialAd curLevelPlayInterstitialAd = null;
     public static Activity nowAct;
     // ====== ① SDK 初始化 ======
@@ -280,6 +283,26 @@ public class LevelPlayAdsManager {
         });
 
         try {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    activity.addContentView(bannerView, new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+                    View parent = (View) bannerView.getParent();
+                    parent.post(() -> {
+                        bannerView.setAlpha(vis);
+                        int pw = parent.getWidth();
+                        int ph = parent.getHeight();
+
+                        float x = pw * bannerX;
+                        float y = ph * bannerY;
+
+                        bannerView.setX(x);
+                        bannerView.setY(y);
+                    });
+                }
+            });
+
             bannerView.loadAd();
         } catch (Throwable t) {
             if (bannerCb != null) {
