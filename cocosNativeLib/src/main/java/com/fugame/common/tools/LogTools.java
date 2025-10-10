@@ -1,9 +1,13 @@
 package com.fugame.common.tools;
 
+import android.os.Debug;
 import android.util.Log;
 
 public class LogTools {
     public static void LogPrint(String a,String b){
-        Log.e(a,b);
+        if (Debug.isDebuggerConnected()){
+            Log.e(a,b);
+        }
+
     }
 }
