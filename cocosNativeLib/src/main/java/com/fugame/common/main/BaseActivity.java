@@ -233,7 +233,6 @@ public class BaseActivity extends CommonActivity {
         }
     }
 
-    @Override
     public void initAdsGame() {
         String appid = baseActivity.getString(R.string.ads_appid);
         String insertid = baseActivity.getString(R.string.ads_insertid);
