@@ -325,13 +325,9 @@ public class NativeSDK {
                 });
             }
         };
-        baseActivity.initAds();
+        baseActivity.initAdsGame();
     }
 
-//    @JavascriptInterface
-//    public String getCountryLocal() {
-//        return Locale.getDefault().getCountry().toLowerCase();
-//    }
 
     @JavascriptInterface
     public String GetAndroidInternalStoragePath() {

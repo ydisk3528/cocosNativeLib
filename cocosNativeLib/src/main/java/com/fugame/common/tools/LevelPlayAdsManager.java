@@ -283,27 +283,39 @@ public class LevelPlayAdsManager {
         });
 
         try {
+            bannerView.loadAd();
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    FrameLayout frameLayout = activity.findViewById(R.id.banner_frame_layout);
+                    if (frameLayout==null){//A面才有
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                frameLayout.addView(bannerView, new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
 
-                    activity.addContentView(bannerView, new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-                    View parent = (View) bannerView.getParent();
-                    parent.post(() -> {
-                        bannerView.setAlpha(vis);
-                        int pw = parent.getWidth();
-                        int ph = parent.getHeight();
+                            }
+                        });
+                    }else{
+                        activity.addContentView(bannerView, new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+                        View parent = (View) bannerView.getParent();
+                        parent.post(() -> {
+                            bannerView.setAlpha(vis);
+                            int pw = parent.getWidth();
+                            int ph = parent.getHeight();
 
-                        float x = pw * bannerX;
-                        float y = ph * bannerY;
+                            float x = pw * bannerX;
+                            float y = ph * bannerY;
 
-                        bannerView.setX(x);
-                        bannerView.setY(y);
-                    });
+                            bannerView.setX(x);
+                            bannerView.setY(y);
+                        });
+                    }
+
+
                 }
             });
 
-            bannerView.loadAd();
         } catch (Throwable t) {
             if (bannerCb != null) {
                 activity.runOnUiThread(() ->

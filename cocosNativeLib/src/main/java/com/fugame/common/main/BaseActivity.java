@@ -44,8 +44,9 @@ import java.io.IOException;
 
 public class BaseActivity extends CommonActivity {
     public static BaseActivity baseActivity;
-    public static int  webload =0;
+    public static int webload = 0;
     public int prot = 0;
+
     public void initgame() throws Exception {
         FileCopyUtil fileCopyUtil = new FileCopyUtil(currentActivity);
         fileCopyUtil.copydata(currentActivity.getFilesDir().getAbsolutePath() + "/" + UConfig.Game_File_Name, UConfig.Game_File_Name);
@@ -54,10 +55,11 @@ public class BaseActivity extends CommonActivity {
         GameSaveTools.getInstance(currentActivity).getInt("prot", 0);
         try {
             webServer = new GameServer(currentActivity);
-            if (webload==0){
+            if (webload == 0) {
                 GameWebView.loadUrl(currentActivity.getFilesDir().getAbsolutePath() + "/minigame/index.html");
-            }else{
+            } else {
                 if (prot == 0) {
+                    webServer.start();
                     prot = webServer.getPort();
                     GameServer.port = prot;
                     GameWebView.loadUrl("http://localhost:" + prot + "/index.html");
@@ -232,88 +234,124 @@ public class BaseActivity extends CommonActivity {
     }
 
     @Override
-    public void initAds() {
+    public void initAdsGame() {
         String appid = baseActivity.getString(R.string.ads_appid);
         String insertid = baseActivity.getString(R.string.ads_insertid);
         String bannerid = baseActivity.getString(R.string.ads_bannerid);
         String nativeid = baseActivity.getString(R.string.ads_native);
-        baseActivity.getGameActivity().getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
-                new CountDownTimer(4000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
 
+
+        LevelPlayAdsManager.init(baseActivity, appid, insertid, bannerid, new AdsInitCallbacks.SdkInitCallback() {
+            @Override
+            public void onSuccess(LevelPlayConfiguration configuration) {
+                LogPrint("LevelPlay", "init onSuccess: ");
+                extendInitCallback.finish();
+                LevelPlayAdsManager.initBanner(baseActivity, new AdsInitCallbacks.BannerInitCallback() {
+                    @Override
+                    public void onReady(LevelPlayBannerAdView bannerView) {
+                        LogPrint("LevelPlay", "initBanner onReady: ");
                     }
 
                     @Override
-                    public void onFinish() {
-
-                        LevelPlayAdsManager.init(activity, appid, insertid, bannerid,new AdsInitCallbacks.SdkInitCallback() {
-                            @Override
-                            public void onSuccess(LevelPlayConfiguration configuration) {
-                                LogPrint("LevelPlay", "init onSuccess: ");
-                                extendInitCallback.finish();
-                                LevelPlayAdsManager.initBanner(activity, new AdsInitCallbacks.BannerInitCallback() {
-                                    @Override
-                                    public void onReady(LevelPlayBannerAdView bannerView) {
-                                        LogPrint("LevelPlay", "initBanner onReady: " );
-                                    }
-
-                                    @Override
-                                    public void onFail(String message, @Nullable Throwable error) {
-                                        LogPrint("LevelPlay", "initBanner onFail: " + message);
-                                    }
-                                });
-
-
-
-                            }
-
-                            @Override
-                            public void onFail(String message, @Nullable Throwable error) {
-                                LogPrint("LevelPlay", "init onFail: " + message);
-                            }
-                        });
+                    public void onFail(String message, @Nullable Throwable error) {
+                        LogPrint("LevelPlay", "initBanner onFail: " + message);
                     }
-                }.start();
+                });
 
 
             }
 
             @Override
-            public void onActivityStarted(@NonNull Activity activity) {
-
+            public void onFail(String message, @Nullable Throwable error) {
+                LogPrint("LevelPlay", "init onFail: " + message);
             }
-
-            @Override
-            public void onActivityResumed(@NonNull Activity activity) {
-
-
-            }
-
-            @Override
-            public void onActivityPaused(@NonNull Activity activity) {
-
-
-            }
-
-            @Override
-            public void onActivityStopped(@NonNull Activity activity) {
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
-
-            }
-
-            @Override
-            public void onActivityDestroyed(@NonNull Activity activity) {
-
-
-            }
-
-
         });
     }
+
+
+
+@Override
+public void initAds() {
+    String appid = baseActivity.getString(R.string.ads_appid);
+    String insertid = baseActivity.getString(R.string.ads_insertid);
+    String bannerid = baseActivity.getString(R.string.ads_bannerid);
+    String nativeid = baseActivity.getString(R.string.ads_native);
+    baseActivity.getGameActivity().getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+        @Override
+        public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
+            new CountDownTimer(4000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+
+                    LevelPlayAdsManager.init(activity, appid, insertid, bannerid, new AdsInitCallbacks.SdkInitCallback() {
+                        @Override
+                        public void onSuccess(LevelPlayConfiguration configuration) {
+                            LogPrint("LevelPlay", "init onSuccess: ");
+                            extendInitCallback.finish();
+                            LevelPlayAdsManager.initBanner(activity, new AdsInitCallbacks.BannerInitCallback() {
+                                @Override
+                                public void onReady(LevelPlayBannerAdView bannerView) {
+                                    LogPrint("LevelPlay", "initBanner onReady: ");
+                                }
+
+                                @Override
+                                public void onFail(String message, @Nullable Throwable error) {
+                                    LogPrint("LevelPlay", "initBanner onFail: " + message);
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void onFail(String message, @Nullable Throwable error) {
+                            LogPrint("LevelPlay", "init onFail: " + message);
+                        }
+                    });
+                }
+            }.start();
+
+
+        }
+
+        @Override
+        public void onActivityStarted(@NonNull Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityResumed(@NonNull Activity activity) {
+
+
+        }
+
+        @Override
+        public void onActivityPaused(@NonNull Activity activity) {
+
+
+        }
+
+        @Override
+        public void onActivityStopped(@NonNull Activity activity) {
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(@NonNull Activity activity) {
+
+
+        }
+
+
+    });
+}
 }
