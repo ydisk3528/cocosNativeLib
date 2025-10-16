@@ -1,6 +1,8 @@
 pluginManagement {
     repositories {
-
+        maven {
+            url "https://android-sdk.is.com/"
+        }
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
