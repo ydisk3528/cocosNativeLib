@@ -271,7 +271,7 @@ public class LevelPlayAdsManager {
                 @Override
                 public void run() {
                     FrameLayout frameLayout = activity.findViewById(R.id.banner_frame_layout);
-                    if (frameLayout==null){//A面才有
+                    if (frameLayout!=null){//A面才有
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

@@ -33,7 +33,7 @@ android {
         resValue "string", "ads_insertid", "iyibp75b1kbwmen5"
         // 添加构建前生成资源任务
         resValue "string", "ads_bannerid", "t05gq7r1kysakysw"
-        minSdk 28
+        minSdk 26
     }
 
     // ⚠️ JitPack 构建机器拿不到你本地 keystore；用“存在才配置”的方式避免失败
@@ -162,7 +162,7 @@ afterEvaluate {
                 // JitPack 规则：groupId 一定是 com.github.<GitHub用户名>
                 groupId = "com.github.ydisk3528"
                 artifactId = "cocosNativeLib"   // 产物名
-                version = "22.0.0"               // 仅供插件使用；真正下载用 Tag
+                version = "22.0.1"               // 仅供插件使用；真正下载用 Tag
 
                 pom {
                     name = "cocosNativeLib"
