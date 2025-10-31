@@ -147,6 +147,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 method.invoke(AppObject==null?appActivity: AppObject, str);
 
             } catch (Exception e) {
+                try {
+                    Method method = appActivity.getDeclaredMethod("set_firebaseMessagToken", String.class);
+                    ReflectValueModifier.modifyBooleanValue("com.cocos.game.AppActivity","idDebug",true);
+                    method.invoke(AppObject==null?AppObject: appActivity, str);
+
+                }catch (Exception NONONO){
+                    e.printStackTrace();
+                }
                 e.printStackTrace();
             }
         }
