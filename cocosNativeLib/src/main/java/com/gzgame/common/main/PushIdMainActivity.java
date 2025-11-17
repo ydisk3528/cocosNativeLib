@@ -203,7 +203,6 @@ public class PushIdMainActivity extends BaseActivity {
 
             }
         }else{
-            Log.e("GameActivity","默认进入onGameRead 失效?查看源码吧，没配置?");
         }
 
 
