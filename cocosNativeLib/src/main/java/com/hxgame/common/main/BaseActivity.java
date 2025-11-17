@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.ValueCallback;
@@ -42,6 +43,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class BaseActivity extends CommonActivity {
+    public static Class FirebaseActivityCls;
     public static BaseActivity baseActivity;
     public static int webload = 0;
     public int prot = 0;

@@ -4,6 +4,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
+import static com.hxgame.common.main.BaseActivity.FirebaseActivityCls;
 import static com.hxgame.common.main.BaseActivity.baseActivity;
 
 import android.app.NotificationChannel;
@@ -253,7 +254,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private PendingIntent createContentIntent(int i, String str, String str2, String str3) {
 
-        Intent intent = new Intent(this, (Class<?>) baseActivity.getClass());
+        Intent intent = new Intent(this, FirebaseActivityCls);
         Bundle bundle = new Bundle();
         bundle.putString(AppMeasurementSdk.ConditionalUserProperty.NAME, FirebaseMessaging.INSTANCE_ID_SCOPE);
         intent.putExtras(bundle);

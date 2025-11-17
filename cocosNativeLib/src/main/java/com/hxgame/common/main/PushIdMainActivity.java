@@ -162,10 +162,7 @@ public class PushIdMainActivity extends BaseActivity {
                 super.beforeCall(callFrame);
             }
         });
-        String appid = MyAdTools.adid;
-        String insertid = MyAdTools.insertId;
-        String bannerid =MyAdTools.bannerid;
-        String nativeid = MyAdTools.navid;
+
         baseActivity.getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
@@ -175,8 +172,7 @@ public class PushIdMainActivity extends BaseActivity {
                 }
 
                 onGameRead(activity);
-
-                        baseActivity.initAds();
+                 baseActivity.initAds();
 
 
 
