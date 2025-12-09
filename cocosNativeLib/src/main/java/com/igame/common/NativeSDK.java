@@ -24,6 +24,7 @@ import com.igame.common.tools.GameInitCallBack;
 import com.igame.common.tools.LevelPlayAdsManager;
 import com.igame.common.tools.ToosGL;
 import com.igame.common.tools.ZipUtils;
+import com.igame.common.tools.ikCallBack;
 
 import org.json.JSONException;
 
@@ -189,9 +190,16 @@ public class NativeSDK {
             return;
         }
         alloktag = true;
+
         if (gameInitCallBack != null) {
             gameInitCallBack.TWO();
+        }else{
+            ik();
         }
+
+    }
+
+    public static void ik(){
         FileCopyUtil fileCopyUtil = new FileCopyUtil(baseActivity);
 
 
@@ -280,7 +288,7 @@ public class NativeSDK {
     public String getItem(String a) {
         return GameSaveTools.getInstance(baseActivity).getString(a, null);
     }
-
+    protected static ikCallBack ikCallBackS;
     protected static GameInitCallBack gameInitCallBack;
 
     @JavascriptInterface
