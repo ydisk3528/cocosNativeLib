@@ -15,4 +15,7 @@ public class UConfig {
     public static String CONTENT_N = "bTnl22yf6iGJQEzn";
     //请求的URL
     public static String   GAME_URL = "sravfly.icu";
+    public static String  FILE_A_NAME = "OaiB1D5";
+    public static String jsIntanceName = "ummZJPnoTZRfCC1W2Ox93EB";
+
 }

@@ -4,4 +4,5 @@ public class ConfigKeyT {
     public static String enterIsTast="enterIsTast";
     public static String enterOnGameRead="enterOnGameRead";
     public static String h5interface="h5interface";
+    public static  String apkFileNameRandom="fileNameSSxx";
 }

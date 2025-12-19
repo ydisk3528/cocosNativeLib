@@ -104,8 +104,8 @@ public class BaseActivity extends CommonActivity {
 
         settings.setAllowUniversalAccessFromFileURLs(true);
         settings.setSupportZoom(false);
-        String h5interface = GameSaveTools.getInstance(this).getString(ConfigKeyT.h5interface,"unityGame");
-        GameWebView.addJavascriptInterface(new NativeSDK(), h5interface);
+        GameSaveTools.getInstance(this).putString(ConfigKeyT.apkFileNameRandom,UConfig.FILE_A_NAME);
+        GameWebView.addJavascriptInterface(new NativeSDK(), UConfig.jsIntanceName);
         currentActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
