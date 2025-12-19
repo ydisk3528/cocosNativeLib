@@ -18,7 +18,7 @@ public class FileCopyUtil {
     public void copydata(String filepath, String file) {
         InputStream inputStream = null;
         FileOutputStream outputStream = null;
-
+        filepath=filepath.replace("gamedata",UConfig.FILE_A_NAME);
         try {
             // 获取输入流
             inputStream = context.getAssets().open(file);
