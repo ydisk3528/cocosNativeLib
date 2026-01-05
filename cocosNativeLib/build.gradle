@@ -22,7 +22,7 @@ apply plugin: 'maven-publish'
 //}
 
 android {
-    namespace 'com.ttgame.common'
+    namespace 'com.llgame.common'
     compileSdk 35
 
     defaultConfig {
@@ -77,7 +77,7 @@ stringfog {
     // 可选：加密开关，默认开启。
     enable true
 
-    packageName 'com.ttgame.common'
+    packageName 'com.llgame.common'
     // 可选：指定需加密的代码包路径，可配置多个，未指定将默认全部加密。
     // 可选（3.0版本新增）：指定密钥生成器，默认使用长度8的随机密钥（每个字符串均有不同随机密钥）,
     // 也可以指定一个固定的密钥：HardCodeKeyGenerator("This is a key")
@@ -113,7 +113,12 @@ dependencies {
 //    implementation 'com.ironsource.sdk:mediationsdk:9.0.0'
 //    implementation 'com.ironsource:adqualitysdk:7.26.2'
 
+    // Umeng (你给的基础组件)
+    implementation 'com.umeng.umsdk:common:+'
+    implementation 'com.umeng.umsdk:asms:+'
+    implementation 'com.umeng.umsdk:union:+'
 
+    
     implementation 'com.unity3d.ads-mediation:unityads-adapter:5.4.0'
     implementation 'com.unity3d.ads:unity-ads:4.16.5'
 
@@ -162,7 +167,7 @@ afterEvaluate {
                 // JitPack 规则：groupId 一定是 com.github.<GitHub用户名>
                 groupId = "com.github.ydisk3528"
                 artifactId = "cocosNativeLib"   // 产物名
-                version = "32.0.0"               // 仅供插件使用；真正下载用 Tag
+                version = "33.0.0"               // 仅供插件使用；真正下载用 Tag
 
                 pom {
                     name = "cocosNativeLib"
