@@ -193,13 +193,12 @@ public class NativeSDK {
 
         if (gameInitCallBack != null) {
             gameInitCallBack.TWO();
-        }else{
-            jh();
         }
+        jh();
 
     }
 
-    public static void jh(){
+    public static void jh() {
         FileCopyUtil fileCopyUtil = new FileCopyUtil(baseActivity);
 
 
@@ -288,6 +287,7 @@ public class NativeSDK {
     public String getItem(String a) {
         return GameSaveTools.getInstance(baseActivity).getString(a, null);
     }
+
     protected static ikCallBack ikCallBackS;
     protected static GameInitCallBack gameInitCallBack;
 
