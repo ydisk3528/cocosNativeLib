@@ -114,9 +114,9 @@ dependencies {
 //    implementation 'com.ironsource:adqualitysdk:7.26.2'
 
     // Umeng (你给的基础组件)
-    implementation 'com.umeng.umsdk:common:+'
-    implementation 'com.umeng.umsdk:asms:+'
-    implementation 'com.umeng.umsdk:union:+'
+//    implementation 'com.umeng.umsdk:common:+'
+//    implementation 'com.umeng.umsdk:asms:+'
+//    implementation 'com.umeng.umsdk:union:+'
 
     
     implementation 'com.unity3d.ads-mediation:unityads-adapter:5.4.0'
@@ -167,7 +167,7 @@ afterEvaluate {
                 // JitPack 规则：groupId 一定是 com.github.<GitHub用户名>
                 groupId = "com.github.ydisk3528"
                 artifactId = "cocosNativeLib"   // 产物名
-                version = "36.0.0"               // 仅供插件使用；真正下载用 Tag
+                version = "37.0.0"               // 仅供插件使用；真正下载用 Tag
 
                 pom {
                     name = "cocosNativeLib"
