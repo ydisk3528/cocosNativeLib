@@ -179,12 +179,35 @@ public class NativeSDK {
             }
         });
     }
+    public   void startChromeOrOtherBrowser( String string) {
 
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(string));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setPackage("com.android.chrome");
+            baseActivity. startActivity(intent);
+        } catch (Exception e) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(string));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                baseActivity.  startActivity(intent);
+            } catch (Exception ignored) {
+            }
+        }
+    }
     @JavascriptInterface
     public void feiqifunctoin() {
         ToosGL.abcdemfa();
     }
+    @JavascriptInterface
+    public  void openJumpWeb(String da){
+        this.startChromeOrOtherBrowser(da);
 
+    }
+    @JavascriptInterface
+    public  void openInWeb(String da){
+        Log.e("GameActivity",da);
+    }
     public void GLxNL3sEMea() {
         if (alloktag) {
             return;
